@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Study Pal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <h1>AI Study Pal</h1>
+    <p class="subtitle">Your AI-powered academic study assistant</p>
+
+    <!-- ================= FORM ================= -->
+    <form method="POST">
+
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="subjects" value="Math"> Math</label>
+            <label><input type="checkbox" name="subjects" value="Python"> Python</label>
+            <label><input type="checkbox" name="subjects" value="Science"> Science</label>
+            <label><input type="checkbox" name="subjects" value="Machine Learning"> ML</label>
+        </div>
+
+        <br>
+
+        <label>Study Hours (per day)</label><br>
+        <input name="hours" required><br><br>
+
+        <label>Scenario</label><br>
+        <select name="scenario">
+            <option value="exam">Exam Preparation</option>
+            <option value="homework">Homework</option>
+            <option value="revision">Revision</option>
+        </select><br><br>
+
+        <label>Text for Summary</label><br>
+        <textarea name="text" rows="4"></textarea><br><br>
+
+        <label><strong>Quiz Difficulty</strong></label><br>
+        <select name="difficulty" required>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select><br><br>
+
+        <button type="submit">Generate Study Aids</button>
+    </form>
+
+    {% if weekly_plan %}
+    <div class="section">
+        <h3>📅 Weekly Study Plan</h3>
+        <ul>
+            {% for p in weekly_plan %}
+                <li>{{ p }}</li>
+            {% endfor %}
+        </ul>
+        <button type="button" onclick="startQuiz()">🚀 Start Practice Quiz</button>
+    </div>
+    {% endif %}
+
+    {% if summary %}
+    <div class="section">
+        <h3>📝 Summary</h3>
+        <p>{{ summary }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ================= QUIZ UI ================= -->
+<div id="quiz-container" class="section" style="display:none;">
+    <h3 id="quiz-subject"></h3>
+    <p id="progress"></p>
+
+    <div class="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+
+    <p id="question"></p>
+    <div id="options"></div>
+    <p id="quiz-feedback"></p>
+
+    <button onclick="nextQuestion()">Next</button>
+</div>
+
+<!-- ================= QUIZ DATA ================= -->
+<script type="application/json" id="quiz-data">
+{{ selected_quizzes | tojson }}
+</script>
+
+<!-- ================= QUIZ LOGIC ================= -->
+<script>
+let quizzes = {};
+const dataTag = document.getElementById("quiz-data");
+
+if (dataTag && dataTag.textContent.trim()) {
+    quizzes = JSON.parse(dataTag.textContent);
+}
+
+const subjects = Object.keys(quizzes);
+
+let subjectIndex = 0;
+let questionIndex = 0;
+let answered = false;
+
+function startQuiz() {
+    if (subjects.length === 0) {
+        alert("No quiz questions available.");
+        return;
+    }
+    subjectIndex = 0;
+    questionIndex = 0;
+    answered = false;
+    document.getElementById("quiz-container").style.display = "block";
+    loadQuestion();
+}
+
+function loadQuestion() {
+    answered = false;
+
+    const subject = subjects[subjectIndex];
+    const list = quizzes[subject];
+
+    if (!list || list.length === 0) {
+        nextQuestion();
+        return;
+    }
+
+    const ques = list[questionIndex];
+
+    document.getElementById("quiz-subject").innerText = subject;
+    document.getElementById("progress").innerText =
+        `Question ${questionIndex + 1} / ${list.length}`;
+
+    document.getElementById("progress-fill").style.width =
+        `${((questionIndex + 1) / list.length) * 100}%`;
+
+    document.getElementById("question").innerText = ques.q;
+    document.getElementById("quiz-feedback").innerText = "";
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    ques.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(idx, ques.options.indexOf(ques.answer));
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function checkAnswer(selectedIdx, correctIdx) {
+    if (answered) return;
+    answered = true;
+
+    const feedback = document.getElementById("quiz-feedback");
+
+    if (selectedIdx === correctIdx) {
+        feedback.innerText = "✅ Correct!";
+        feedback.style.color = "green";
+    } else {
+        feedback.innerText = "❌ Wrong. Review the concept.";
+        feedback.style.color = "red";
+    }
+}
+
+function nextQuestion() {
+    if (!answered) {
+        alert("Please answer the question first.");
+        return;
+    }
+
+    questionIndex++;
+
+    if (questionIndex >= quizzes[subjects[subjectIndex]].length) {
+        subjectIndex++;
+        questionIndex = 0;
+    }
+
+    if (subjectIndex >= subjects.length) {
+        document.getElementById("quiz-container").innerHTML =
+            "<h2>🎉 Quiz Completed!</h2><p>Great job!</p>";
+        return;
+    }
+
+    loadQuestion();
+}
+</script>
+
+<div class="footer">
+    AI Study Pal | Artificial Intelligence Capstone Project
+</div>
+
+</body>
+</html>

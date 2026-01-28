@@ -1,0 +1,211 @@
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* ===== PAGE BACKGROUND ===== */
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    padding: 30px;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* ===== HEADINGS ===== */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* ===== FORM ===== */
+form {
+    background: #f9f9ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ===== SUBJECT CHECKBOXES ===== */
+.checkbox-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.checkbox-group label {
+    font-weight: normal;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    margin-top: 20px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+button:disabled {
+    background: #ddd;
+    color: #777;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+    background: #f7f8ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.section h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+/* ===== QUIZ UI ===== */
+#quiz-container {
+    border: 2px solid #e6e6ff;
+    background: #ffffff;
+}
+
+/* Subject title */
+#quiz-subject {
+    color: #4b5bdc;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+/* Progress text */
+#progress {
+    color: #777;
+    font-size: 14px;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+#progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transition: width 0.3s ease;
+}
+
+/* ===== QUESTION ===== */
+#question {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 15px 0;
+    color: #333;
+}
+
+/* ===== OPTIONS ===== */
+#options button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #ccc;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#options button:hover {
+    background: #f0f2ff;
+    transform: translateX(3px);
+}
+
+#options button.selected {
+    background: #dfe3ff;
+    border-color: #667eea;
+}
+
+/* ===== FEEDBACK ===== */
+#quiz-feedback {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#quiz-feedback.green {
+    color: #2e7d32;
+}
+
+#quiz-feedback.red {
+    color: #c62828;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #888;
+    font-size: 14px;
+}
